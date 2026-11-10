@@ -1,0 +1,14 @@
+{"0": {
+  "game": {"guild": 0, "admin": 0, "cycle": 24, "start": 0},
+  "players": {
+    "0": {
+      "pos": [
+        0,
+        0
+      ],
+      "reach": 3.5,
+      "ap": 0,
+      "hp": 3
+    }
+  }
+}}

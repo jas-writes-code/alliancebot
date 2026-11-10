@@ -1,0 +1,47 @@
+{
+    "register": {
+        "command": "newPlayer",
+        "args": ["gid"],
+        "info": "Registers you to start in the next game. Can not be used when a game is ongoing."
+    },
+    "move": {
+        "command": "movePlayer",
+        "args": ["dir"],
+        "info": "Gameplay command. Move 1 square. This action costs 1 AP."
+    },
+    "donate": {
+        "command": "giveHealth",
+        "args": ["target"],
+        "info": "Gameplay command. Give 1 AP to a player within reach of you."
+    },
+    "attack": {
+        "command": "giveHarm",
+        "args": ["target"],
+        "info": "Gameplay command. Attack a player within reach. This action costs 1 AP."
+    },
+    "expand": {
+        "command": "increaseReach",
+        "args": [],
+        "info": "Gameplay command. Permanently increase your reach by 0.5. This action costs 1 AP."
+    },
+    "confirm": {
+        "command": "saveChanges",
+        "args": [],
+        "info": "Lock in gameplay actions or settings changes. Once confirmed, these actions can not be cancelled."
+    },
+    "set": {
+        "command": "changeSettings",
+        "args": ["setting", "newValue"],
+        "info": "Change gameplay settings. Can only be executed by a game owner."
+    },
+    "create": {
+        "command": "newGame",
+        "args": [],
+        "info": "Starts a new game. Players can use !register <game id> to join this game until the first tick."
+    },
+    "leave": {
+        "command": "removePlayer",
+        "args": [],
+        "info": "Leaves your current game. Your AP will be distributed to players within your reach."
+    }
+}
