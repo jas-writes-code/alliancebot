@@ -10,13 +10,13 @@ def load(item):
             file = json.load(f)
     return file
 
-def save(item):
-    if item == "config":
+def save(file, item):
+    if file == "config":
         with open("config.json", "w") as f:
             json.dump(item, f)
     else:
-        with open(f'data/{item}.json', 'w') as f:
-            json.dump(item, f)
+        with open(f'data/{file}.json', 'w') as f:
+            json.dump(item, f, indent=4)
 
 def newlength(text: str, limit: int = 1900) -> list[str]:
     chunks = []

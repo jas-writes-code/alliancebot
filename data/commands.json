@@ -4,9 +4,9 @@
             "args": [],
             "info": "Should be pretty self-explanatory."
         },
-    "register": {
+    "join": {
         "command": "newPlayer",
-        "args": ["gid"],
+        "args": ["GameID"],
         "info": "Registers you to start in the chosen game. Can not be used when the game is ongoing."
     },
     "move": {
@@ -32,7 +32,7 @@
     "confirm": {
         "command": "saveChanges",
         "args": [],
-        "info": "Lock in gameplay actions or settings changes. Once confirmed, these actions can not be cancelled."
+        "info": "Lock in all pending gameplay actions or settings changes. Once confirmed, these actions can not be cancelled."
     },
     "set": {
         "command": "changeSettings",
@@ -48,5 +48,10 @@
         "command": "removePlayer",
         "args": [],
         "info": "Leaves your current game. Your AP will be distributed to players within your reach."
+    },
+    "unqueue": {
+        "command": "cancelAction",
+        "args": ["action", "*args"],
+        "info": "Removes a given action from the queue."
     }
 }
