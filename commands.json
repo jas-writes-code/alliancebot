@@ -1,8 +1,13 @@
 {
+    "help": {
+            "command": "listCommands",
+            "args": [],
+            "info": "Should be pretty self-explanatory."
+        },
     "register": {
         "command": "newPlayer",
         "args": ["gid"],
-        "info": "Registers you to start in the next game. Can not be used when a game is ongoing."
+        "info": "Registers you to start in the chosen game. Can not be used when the game is ongoing."
     },
     "move": {
         "command": "movePlayer",

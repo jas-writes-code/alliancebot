@@ -1,5 +1,7 @@
 import json
 
+#text and data wrangling that i'll probably need fairly often
+
 def loaddata():
     with open('config.json', 'r') as f:
         config = json.load(f)
