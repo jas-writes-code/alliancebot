@@ -4,10 +4,21 @@ import wrangler, tickqueue
 from human_id import generate_id as newid
 import time, random
 
+async def newGid():
+    data = wrangler.load("gamedata")
+    gid = newid
+    if len(data) > 0:
+        if gid in data:
+            await newGid()
+        else:
+            return gid
+    else:
+        return gid
+
 async def newGame(message):
     if message.guild:
         data = wrangler.load("gamedata")
-        gid = newid(word_count=3)
+        gid = await newGid()
         start = int(time.time())
         cl = Colour.from_rgb(random.randint(64, 224),random.randint(64, 224),random.randint(64, 224))
         role = await message.guild.create_role(name=gid, mentionable=True, reason=f"Create game channels for {gid}", colour=cl)
