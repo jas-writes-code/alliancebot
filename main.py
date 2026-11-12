@@ -11,12 +11,12 @@ key = config["key"]
 
 async def newGame(message, args):
     async with message.channel.typing():
-        back = man.newGame(message)
+        back = await man.newGame(message)
         await message.reply(back)
 
 async def newPlayer(message, gid):
     async with message.channel.typing():
-        back = man.newPlayer(message, gid)
+        back = await man.newPlayer(message, gid)
         await message.reply(back)
 
 async def removePlayer(message, gid):
@@ -44,7 +44,7 @@ async def on_message(message):
     if message.guild:
         prefix = config["prefix"][str(message.guild.id)]
     else:
-        prefix = ""
+        prefix = "!"
     commands = wrangler.load("commands")
     if not message.author.bot or message.author.system:
         if message.content.startswith(prefix):

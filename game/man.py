@@ -1,12 +1,32 @@
+from discord import *
+
 import wrangler, tickqueue
 from human_id import generate_id as newid
 import time, random
 
-def newGame(message):
+async def newGame(message):
     if message.guild:
         data = wrangler.load("gamedata")
         gid = newid(word_count=3)
         start = int(time.time())
+        cl = Colour.from_rgb(random.randint(64, 224),random.randint(64, 224),random.randint(64, 224))
+        role = await message.guild.create_role(name=gid, mentionable=True, reason=f"Create game channels for {gid}", colour=cl)
+        speak = {
+            message.guild.default_role: PermissionOverwrite(view_channel=False),
+            role: PermissionOverwrite(view_channel=True)
+        }
+        nonspeak = {
+            message.guild.default_role: PermissionOverwrite(view_channel=False),
+            role: PermissionOverwrite(view_channel=True, send_messages=False)
+        }
+        category = await message.guild.create_category(name=gid, overwrites=speak, reason=f"Create game channels for {gid}")
+        log = await category.create_text_channel(name="game-log", overwrites=nonspeak, reason=f"Create game channels for {gid}")
+        htp = await category.create_text_channel(name="how-to-play", overwrites=nonspeak, reason=f"Create game channels for {gid}")
+        await category.create_text_channel(name="game-general", overwrites=speak, reason=f"Create game channels for {gid}")
+        await category.create_voice_channel(name="game-voice", overwrites=speak, reason=f"Create game channels for {gid}")
+
+        templates = wrangler.load("templates")
+        await htp.send(templates["how-to-play"])
 
         data[gid] = {
             "game": {
@@ -14,7 +34,9 @@ def newGame(message):
                 "admin": message.author.id,
                 "cycle": 24,
                 "start": start,
-                "nextTick": 3600*24 + start
+                "nextTick": 3600*24 + start,
+                "logChannel": log.id,
+                "role": role.id
             },
             "players": {}
         }
@@ -44,7 +66,7 @@ def placePlayer(gid):
         pos = [posx, posy]
         return pos
 
-def newPlayer(message, gid):
+async def newPlayer(message, gid):
     data = wrangler.load("gamedata")
     gid = gid[0]
     if gid in data:
@@ -61,10 +83,14 @@ def newPlayer(message, gid):
         }
 
         wrangler.save("gamedata", data)
-
+        chan = message.guild.get_channel(data[gid]["game"]["logChannel"])
+        rle = message.guild.get_role(data[gid]["game"]["role"])
+        await message.author.add_roles(rle, reason=f"Add player to game {gid}")
         content = f"**You have joined `{gid}`!**\n"
         content += f"You have been placed on {data[gid]['players'][str(message.author.id)]['pos']}.\n"
         content += f"{data[gid]['players'][str(message.author.id)]['hp']} HP | {data[gid]['players'][str(message.author.id)]['ap']} AP |  {data[gid]['players'][str(message.author.id)]['reach']} Reach"
+        await chan.send(f"**Player joined**\n<@{message.author.id}> was placed on {data[gid]['players'][str(message.author.id)]['pos']}."
+                        f"\n{data[gid]['players'][str(message.author.id)]['hp']} HP | {data[gid]['players'][str(message.author.id)]['ap']} AP |  {data[gid]['players'][str(message.author.id)]['reach']} Reach")
         return content
     else:
         return "Game not found. Did you enter the right ID"
